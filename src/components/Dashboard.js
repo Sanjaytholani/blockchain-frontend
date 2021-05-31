@@ -10,7 +10,7 @@ import { useHistory } from "react-router";
 import { selectUser } from "../features/userSlice";
 import firebase from "firebase";
 import { db } from "../firebase";
-
+import axios from "axios";
 const Dashboard = () => {
   const user = useSelector(selectUser);
   const history = useHistory();
@@ -30,6 +30,20 @@ const Dashboard = () => {
           .update({
             answered: true,
             comments: [comment],
+          })
+          .then(() => {
+            axios
+              .post("http://localhost:8000/api/blockchain/append", {
+                transaction: {
+                  sender: "Admin",
+                  receiver: comment?.user,
+                  amount: 1,
+                },
+                timestamp: Date(Date.now()),
+              })
+              .then((response) => {
+                console.log(response);
+              });
           });
       });
   };

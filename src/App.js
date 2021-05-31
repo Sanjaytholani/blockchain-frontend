@@ -8,17 +8,19 @@ import { login, logout } from "./features/userSlice";
 import { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
+import Shop from "./components/Shop";
 const App = () => {
   const dispatch = useDispatch();
   const [user, loading] = useAuthState(auth);
-  const [snapshot] = useCollection(db.collection("users").doc(user?.uid));
   useEffect(() => {
-    if (snapshot?.data()) {
-      dispatch(login(snapshot.data()));
+    if (user) {
+      db.collection("users")
+        .doc(user?.uid)
+        .onSnapshot((snapshot) => dispatch(login(snapshot.data())));
     } else {
       dispatch(logout());
     }
-  }, [user, snapshot, dispatch]);
+  }, [user, dispatch]);
   return (
     <>
       {loading ? (
@@ -31,6 +33,9 @@ const App = () => {
             </Route>
             <Route exact path="/dashboard">
               <Dashboard />
+            </Route>
+            <Route exact path="/shop">
+              <Shop />
             </Route>
           </Switch>
         </Router>

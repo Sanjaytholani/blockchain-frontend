@@ -16,6 +16,12 @@ const Navbar = () => {
       <h1 className="text-2xl">App Name</h1>
       <div className="flex space-x-3 items-center">
         <Link
+          to="/shop"
+          className="px-5 py-2 rounded-lg text-lg border border-whiteSmoke hover:bg-gray-100 focus:outline-none"
+        >
+          Shop
+        </Link>
+        <Link
           to="/dashboard"
           className="px-5 py-2 rounded-lg text-lg border border-whiteSmoke hover:bg-gray-100 focus:outline-none"
         >
